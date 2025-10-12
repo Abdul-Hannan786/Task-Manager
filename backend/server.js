@@ -1,6 +1,7 @@
 import express from "express";
 import dotenv from "dotenv/config";
 import cors from "cors";
+import connectDB from "./config/db.js";
 
 const app = express();
 
@@ -12,6 +13,9 @@ app.use(
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
+
+// Connect Database
+connectDB();
 
 // Middleware
 app.use(express.json());
