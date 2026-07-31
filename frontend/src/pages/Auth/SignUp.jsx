@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import AuthLayout from "../../components/layouts/AuthLayout";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Input from "../../components/Inputs/Input";
 import { validateEmail } from "../../utils/helper";
 import ProfilePhotoSelector from "../../components/Inputs/ProfilePhotoSelector";
@@ -57,7 +57,43 @@ const SignUp = () => {
               placeholder="Enter your full name"
               type="text"
             />
+
+            <Input
+              value={email}
+              onChange={({ target }) => setEmail(target.value)}
+              label="Email Address"
+              placeholder="Enter your email address"
+              trype="text"
+            />
+
+            <Input
+              value={password}
+              onChange={({ target }) => setPassword(target.value)}
+              label="Password"
+              placeholder="Enter your password"
+              type="password"
+            />
+
+            <Input
+              value={adminInviteToken}
+              onChange={({ target }) => setAdminInviteToken(target.value)}
+              label="Admin Invite Token"
+              placeholder="6 Digit Code"
+              type="text"
+            />
           </div>
+
+          {error && <p className="text-red-500 text-xs pb-2.5">{error}</p>}
+
+          <button className="btn-primary" disabled={loading}>
+            Sign Up
+          </button>
+          <p className="text-[14px] text-slate-800 mt-3">
+            Already have an account?{" "}
+            <Link to="/login" className="font-medium text-primary underline">
+              Login
+            </Link>
+          </p>
         </form>
       </div>
     </AuthLayout>
