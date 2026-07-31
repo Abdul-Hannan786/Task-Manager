@@ -39,11 +39,11 @@ export const exportTasksReport = async (req, res) => {
 
     res.setHeader(
       "Content-Type",
-      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     );
     res.setHeader(
       "Content-Disposition",
-      "attachment; filename='tasks_report.xlsx'"
+      "attachment; filename='tasks_report.xlsx'",
     );
 
     return workbook.xlsx.write(res).then(() => {
@@ -64,7 +64,7 @@ export const exportUsersReport = async (req, res) => {
     const users = await User.find().select("name email _id").lean();
     const userTasks = await Task.find().populate(
       "assignedTo",
-      "name email _id"
+      "name email _id",
     );
 
     const userTaskMap = {};
@@ -78,6 +78,7 @@ export const exportUsersReport = async (req, res) => {
         completedTasks: 0,
       };
     });
+
 
     userTasks.map((task) => {
       if (task.assignedTo && task.assignedTo.length > 0) {
@@ -100,31 +101,33 @@ export const exportUsersReport = async (req, res) => {
     const worksheet = workbook.addWorksheet("User Task Report");
 
     worksheet.columns = [
-        {header: "User Name", key: "name", width: 30},
-        {header: "Email", key: "email", width: 40},
-        {header: "Total Assigned Tasks", key: "taskCount", width: 20},
-        {header: "Pending Tasks", key: "pendingTasks", width: 20},
-        {header: "In Progress Tasks", key: "inProgressTasks", width: 20},
-        {header: "Completed Tasks", key: "completedTasks", width: 20},
-    ]
+      { header: "User Name", key: "name", width: 30 },
+      { header: "Email", key: "email", width: 40 },
+      { header: "Total Assigned Tasks", key: "taskCount", width: 20 },
+      { header: "Pending Tasks", key: "pendingTasks", width: 20 },
+      { header: "In Progress Tasks", key: "inProgressTasks", width: 20 },
+      { header: "Completed Tasks", key: "completedTasks", width: 20 },
+    ];
 
     Object.values(userTaskMap).forEach((user) => {
-      worksheet.addRow(user)
-    })
+      worksheet.addRow(user);
+    });
 
     res.setHeaders(
       "Content-Type",
-      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-    )
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    );
     res.setHeader(
       "Content-Disposition",
-      "attachment; filename='users_report.xlsx'"
-    )
+      "attachment; filename='users_report.xlsx'",
+    );
 
     return workbook.xlsx.write(res).then(() => {
       res.end();
-    })
+    });
   } catch (error) {
-    res.status(500).json({ message: "Error exporting tasks", error: error.message });
+    res
+      .status(500)
+      .json({ message: "Error exporting tasks", error: error.message });
   }
 };
