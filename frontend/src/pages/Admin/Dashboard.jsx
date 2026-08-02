@@ -9,6 +9,8 @@ import moment from "moment";
 import { IoMdCard } from "react-icons/io";
 import InfoCard from "../../components/Cards/InfoCard";
 import { addThousandsSeparator } from "../../utils/helper";
+import { LuArrowRight } from "react-icons/lu";
+import TaskListTable from "../../components/TaskListTable";
 
 const Dashboard = () => {
   useUserAuth();
@@ -30,6 +32,10 @@ const Dashboard = () => {
     } catch (error) {
       console.error("Error fetching Data", error);
     }
+  };
+
+  const onSeeMore = () => {
+    navigate("/admin/tasks");
   };
 
   useEffect(() => {
@@ -82,6 +88,21 @@ const Dashboard = () => {
             )}
             color="bg-lime-500"
           />
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 my-4 md:my-6">
+        <div className="md:col-span-2">
+          <div className="card">
+            <div className="flex items-center justify-between">
+              <h5 className="text-lg">Recent Tasks</h5>
+              <button className="card-btn" onClick={onSeeMore}>
+                See All <LuArrowRight className="text-base" />
+              </button>
+            </div>
+
+            <TaskListTable tableData={dashboardData?.recentTasks || []} />
+          </div>
         </div>
       </div>
     </DashboardLayout>
