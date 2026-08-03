@@ -13,7 +13,7 @@ import { LuArrowRight } from "react-icons/lu";
 import TaskListTable from "../../components/TaskListTable";
 import CustomPieChart from "../../components/Charts/CustomPieChart";
 
-const COLORS = ["#00B8DB", "#7BCE00", "#FF6900"];
+const COLORS = ["#00B8DB", "#FF6900", "#7BCE00"];
 
 const Dashboard = () => {
   useUserAuth();
