@@ -11,6 +11,9 @@ import InfoCard from "../../components/Cards/InfoCard";
 import { addThousandsSeparator } from "../../utils/helper";
 import { LuArrowRight } from "react-icons/lu";
 import TaskListTable from "../../components/TaskListTable";
+import CustomPieChart from "../../components/Charts/CustomPieChart";
+
+const COLORS = ["#00B8DB", "#7BCE00", "#FF6900"];
 
 const Dashboard = () => {
   useUserAuth();
@@ -39,7 +42,7 @@ const Dashboard = () => {
     ];
 
     setPieChartData(taskDistributionData);
-    setBarChartData(priorityLevelData)
+    setBarChartData(priorityLevelData);
   };
 
   const getDashboardData = async () => {
@@ -49,7 +52,7 @@ const Dashboard = () => {
       );
       if (response.data) {
         setDashboardData(response.data);
-        prepareChartData(response.data?.charts || null)
+        prepareChartData(response.data?.charts || null);
       }
     } catch (error) {
       console.error("Error fetching Data", error);
@@ -114,6 +117,16 @@ const Dashboard = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 my-4 md:my-6">
+        <div>
+          <div className="card">
+            <div className="flex items-center justify-between">
+              <h5 className="font-medium">Task Distribution</h5>
+            </div>
+
+            <CustomPieChart data={pieChartData} colors={COLORS} />
+          </div>
+        </div>
+
         <div className="md:col-span-2">
           <div className="card">
             <div className="flex items-center justify-between">
