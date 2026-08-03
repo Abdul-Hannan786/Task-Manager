@@ -21,6 +21,27 @@ const Dashboard = () => {
 
   const navigate = useNavigate();
 
+  // Prepare Chart Data
+  const prepareChartData = (data) => {
+    const taskDistribution = data?.taskDistribution || null;
+    const taskPriorityLevels = data?.taskPriorityLevels || null;
+
+    const taskDistributionData = [
+      { status: "Pending", count: taskDistribution?.Pending || 0 },
+      { status: "In Progress", count: taskDistribution?.InProgress || 0 },
+      { status: "Completed", count: taskDistribution?.Completed || 0 },
+    ];
+
+    const priorityLevelData = [
+      { status: "Low", count: taskPriorityLevels?.Low || 0 },
+      { status: "Medium", count: taskPriorityLevels?.Medium || 0 },
+      { status: "High", count: taskPriorityLevels?.High || 0 },
+    ];
+
+    setPieChartData(taskDistributionData);
+    setBarChartData(priorityLevelData)
+  };
+
   const getDashboardData = async () => {
     try {
       const response = await axiosInstance.get(
@@ -28,6 +49,7 @@ const Dashboard = () => {
       );
       if (response.data) {
         setDashboardData(response.data);
+        prepareChartData(response.data?.charts || null)
       }
     } catch (error) {
       console.error("Error fetching Data", error);
