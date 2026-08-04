@@ -4,6 +4,7 @@ import { API_PATHS } from "../../utils/apiPaths";
 import { LuUsers } from "react-icons/lu";
 import Modal from "../Modal";
 import PROFILE_IMG from "../../assets/images/user.png";
+import AvatarGroup from "../AvatarGroup";
 
 const SelectUser = ({ selectedUsers, setSelectedUsers }) => {
   const [allUsers, setAllUsers] = useState([]);
@@ -58,6 +59,12 @@ const SelectUser = ({ selectedUsers, setSelectedUsers }) => {
         </button>
       )}
 
+      {selectedUserAvatar.length > 0 && (
+        <div className="cursor-pointer" onClick={() => setIsModalOpen(true)}>
+            <AvatarGroup avatars={selectedUserAvatar} maxVisible={3} />
+        </div>
+      )}
+
       <Modal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
@@ -70,7 +77,7 @@ const SelectUser = ({ selectedUsers, setSelectedUsers }) => {
               className="flex items-center gap-4 p-3 border-b border-gray-200"
             >
               <img
-                src={user.profileImageUrl || PROFILE_IMG}
+                src={user.profileImageUrl}
                 alt={user.name}
                 className="w-10 h-10 object-cover rounded-full"
               />
