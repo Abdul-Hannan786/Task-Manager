@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axiosInstance from "../../utils/axiosinstance";
 import { API_PATHS } from "../../utils/apiPaths";
 import { LuUsers } from "react-icons/lu";
+import Modal from "../Modal";
 
 const SelectUser = ({ selectedUsers, setSelectedUsers }) => {
   const [allUsers, setAllUsers] = useState([]);
@@ -52,9 +53,17 @@ const SelectUser = ({ selectedUsers, setSelectedUsers }) => {
     <div className="space-y-4 mt-2">
       {selectedUserAvatar.length === 0 && (
         <button className="card-btn" onClick={() => setIsModalOpen(true)}>
-            <LuUsers className="text-sm" /> Add Members
+          <LuUsers className="text-sm" /> Add Members
         </button>
       )}
+
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        title="Select Members"
+      >
+        <div className="space-y-4 h-[60vh] overflow-y-auto"></div>
+      </Modal>
     </div>
   );
 };
