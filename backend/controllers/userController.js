@@ -27,7 +27,7 @@ export const getUsers = async (req, res) => {
         });
 
         return { ...user._doc, pendingTasks, inProgressTasks, completedTasks };
-      })
+      }),
     );
 
     res.json(usersWithTaskCounts);

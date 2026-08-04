@@ -4,6 +4,7 @@ import { useLocation } from "react-router-dom";
 import { LuTrash2 } from "react-icons/lu";
 import { PRIORITY_DATA } from "../../utils/data";
 import SelectDropdown from "../../components/Inputs/SelectDropdown";
+import SelectUser from "../../components/Inputs/SelectUser";
 
 const CreateTask = () => {
   const location = useLocation();
@@ -13,7 +14,7 @@ const CreateTask = () => {
     title: "",
     description: "",
     priority: "Low",
-    dueData: null,
+    dueDate: null,
     assignedTo: [],
     todoCheckList: [],
     attachments: [],
@@ -33,7 +34,7 @@ const CreateTask = () => {
       title: "",
       description: "",
       priority: "Low",
-      dueData: null,
+      dueDate: null,
       assignedTo: [],
       todoCheckList: [],
       attachments: [],
@@ -73,7 +74,7 @@ const CreateTask = () => {
             </div>
 
             <div className="mt-4">
-              <label className="text-sm font-medium text-slate-600">
+              <label className="text-xs md:text-sm font-medium text-slate-600">
                 Task Title
               </label>
               <input
@@ -88,7 +89,7 @@ const CreateTask = () => {
             </div>
 
             <div className="mt-3">
-              <label className="text-sm font-medium text-slate-600">
+              <label className="text-xs md:text-sm font-medium text-slate-600">
                 Description
               </label>
               <textarea
@@ -104,7 +105,7 @@ const CreateTask = () => {
 
             <div className="grid grid-cols-12 gap-4 mt-2">
               <div className="col-span-6 md:col-span-4">
-                <label className="text-sm font-medium text-slate-600">
+                <label className="text-xs md:text-sm font-medium text-slate-600">
                   Priority
                 </label>
                 <SelectDropdown
@@ -112,6 +113,34 @@ const CreateTask = () => {
                   value={taskData.priority}
                   onChange={(value) => handleValueChange("priority", value)}
                   placeholder="Select Priority"
+                />
+              </div>
+
+              <div className="col-span-6 md:col-span-4">
+                <label className="text-xs md:text-sm font-medium text-slate-600">
+                  Due Date
+                </label>
+                <input
+                  type="date"
+                  placeholder="Create App UI"
+                  className="form-input"
+                  value={taskData.dueDate}
+                  onChange={({ target }) =>
+                    handleValueChange("dueDate", target.value)
+                  }
+                />
+              </div>
+
+              <div className="col-span-12 md:col-span-4">
+                <label className="text-xs md:text-sm font-medium text-slate-600">
+                  Assign To
+                </label>
+
+                <SelectUser
+                  selectedUsers={taskData.assignedTo}
+                  setSelectedUsers={(value) => {
+                    handleValueChange("assignedTo", value);
+                  }}
                 />
               </div>
             </div>

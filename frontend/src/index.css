@@ -39,5 +39,5 @@
 }
 
 .form-input {
-  @apply w-full text-[15px] text-black outline-none bg-white border border-slate-100 px-2.5 py-3 rounded-md mt-2 placeholder:text-gray-500
+  @apply w-full text-sm md:text-[15px] text-black outline-none bg-white border border-slate-100 px-2.5 py-3 rounded-md mt-2 placeholder:text-gray-500
 }
