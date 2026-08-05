@@ -165,7 +165,24 @@ const CreateTask = () => {
                 Add Attachments
               </label>
 
-              <AddAttachmentsInput attachments={taskData.attachments} setAttachments={(value) => handleValueChange("attachments", value)} />
+              <AddAttachmentsInput
+                attachments={taskData.attachments}
+                setAttachments={(value) =>
+                  handleValueChange("attachments", value)
+                }
+              />
+            </div>
+
+            {error && <p className="text-xs font-medium text-red-500 mt-5">{error}</p>}
+
+            <div className="flex justify-end mt-7">
+              <button
+                className="add-btn"
+                onClick={handleSubmit}
+                disabled={loading}
+              >
+                {taskId ? "UPDATE TASK" : "CREATE TASK"}
+              </button>
             </div>
           </div>
         </div>
