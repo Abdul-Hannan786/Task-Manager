@@ -36,7 +36,24 @@ const TaskCard = ({
     }
   };
 
-  return <div></div>;
+  return (
+    <div className="" onClick={onClick}>
+      <div className="">
+        <div
+          className={`text-[11px] font-medium ${getStatusTagColor()} px-4 py-0.5 rounded`}
+        >
+          {status}
+        </div>
+        <div
+          className={`text-[11px] font-medium ${getPriorityTagColor()} px-4 py-0.5 rounded`}
+        >
+          {priority} Priority
+        </div>
+      </div>
+
+      <div className=""></div>
+    </div>
+  );
 };
 
 export default TaskCard;
