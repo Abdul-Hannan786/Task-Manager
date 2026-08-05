@@ -36,7 +36,7 @@ const TaskCard = ({
     }
   };
 
-  return <div>TaskCard</div>;
+  return <div></div>;
 };
 
 export default TaskCard;
