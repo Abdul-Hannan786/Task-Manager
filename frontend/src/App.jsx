@@ -19,6 +19,7 @@ import ViewTaskDetails from "./pages/User/ViewTaskDetails";
 import PrivateRoute from "./routes/PrivateRoute";
 import UserProvider, { UserContext } from "./context/userContext";
 import { useContext } from "react";
+import { Toaster } from "react-hot-toast";
 
 const App = () => {
   return (
@@ -52,6 +53,8 @@ const App = () => {
           </Routes>
         </Router>
       </div>
+
+      <Toaster toastOptions={{ className: "", style: { fontSize: "13px" } }} />
     </UserProvider>
   );
 };
@@ -64,5 +67,9 @@ const Root = () => {
 
   if (!user) return <Navigate to="/login" />;
 
-  return user.role === "admin" ? <Navigate to="/admin/dashboard" /> : <Navigate to="/user/dashboard" />
+  return user.role === "admin" ? (
+    <Navigate to="/admin/dashboard" />
+  ) : (
+    <Navigate to="/user/dashboard" />
+  );
 };
