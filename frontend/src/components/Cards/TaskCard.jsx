@@ -33,7 +33,7 @@ const TaskCard = ({
     switch (priority) {
       case "Low":
         return "text-emerald-500 bg-emerald-50 border border-emerald-500/10";
-      case "Completed":
+      case "Medium":
         return "text-amber-500 bg-amber-50 border border-amber-500/10";
       default:
         return "text-rose-500 bg-rose-50 border border-rose-500/10";

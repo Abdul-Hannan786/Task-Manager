@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import DashboardLayout from "../../components/layouts/DashboardLayout";
 import { useLocation } from "react-router-dom";
 import { LuTrash2 } from "react-icons/lu";
@@ -10,6 +10,7 @@ import AddAttachmentsInput from "../../components/Inputs/AddAttachmentsInput";
 import axiosInstance from "../../utils/axiosinstance";
 import { API_PATHS } from "../../utils/apiPaths";
 import toast from "react-hot-toast";
+import moment from "moment";
 
 const CreateTask = () => {
   const location = useLocation();
@@ -112,9 +113,42 @@ const CreateTask = () => {
   };
 
   // Get Task info by ID
-  const getTaskDetailsByID = async () => {};
+  const getTaskDetailsByID = async () => {
+    try {
+      const response = await axiosInstance.get(
+        API_PATHS.TASKS.GET_TASK_BY_ID(taskId),
+      );
+
+      if (response.data) {
+        const taskInfo = response.data;
+        setCurrentTask(taskInfo);
+
+        setTaskData((prevSate) => ({
+          title: taskInfo.title,
+          description: taskInfo.description,
+          priority: taskInfo.priority,
+          dueDate: taskInfo.dueDate
+            ? moment(taskInfo.dueDate).format("YYYY-MM-DD")
+            : null,
+          assignedTo: taskInfo?.assignedTo?.map((item) => item?._id) || [],
+          todoCheckList:
+            taskInfo?.todoCheckList?.map((item) => item?.text) || [],
+          attachments: taskInfo?.attachments || [],
+        }));
+      }
+    } catch (error) {
+      console.error("Error fetching Task By ID", error)
+    }
+  };
 
   const deleteTask = () => {};
+
+  useEffect(() => {
+    if(taskId){
+      getTaskDetailsByID(taskId)
+    }
+    return () => {}
+  }, [taskId])
 
   return (
     <DashboardLayout activeMenu="Create Task">
