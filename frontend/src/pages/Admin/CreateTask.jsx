@@ -73,7 +73,39 @@ const CreateTask = () => {
     }
   };
 
-  const updateTask = async () => {};
+  const updateTask = async () => {
+    setLoading(true);
+    try {
+      const todoList = taskData.todoCheckList?.map((item) => {
+        const prevTodoCheckList = currentTask?.todoCheckList || [];
+        const matchedTask = prevTodoCheckList.find(
+          (task) => task.text === item,
+        );
+
+        return {
+          text: item,
+          completed: matchedTask ? matchedTask.completed : false,
+        };
+      });
+
+      const response = await axiosInstance.put(
+        API_PATHS.TASKS.UPDATE_TASK(taskId),
+        {
+          ...taskData,
+          dueDate: new Date(taskData.dueDate).toISOString(),
+          todoCheckList: todoList,
+        },
+      );
+
+      toast.success("Task Updated Successfully");
+      clearData();
+    } catch (error) {
+      console.error("Error Updating Task", error);
+      setLoading(false);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleSubmit = async () => {
     setError(null);
@@ -137,18 +169,18 @@ const CreateTask = () => {
         }));
       }
     } catch (error) {
-      console.error("Error fetching Task By ID", error)
+      console.error("Error fetching Task By ID", error);
     }
   };
 
   const deleteTask = () => {};
 
   useEffect(() => {
-    if(taskId){
-      getTaskDetailsByID(taskId)
+    if (taskId) {
+      getTaskDetailsByID(taskId);
     }
-    return () => {}
-  }, [taskId])
+    return () => {};
+  }, [taskId]);
 
   return (
     <DashboardLayout activeMenu="Create Task">
