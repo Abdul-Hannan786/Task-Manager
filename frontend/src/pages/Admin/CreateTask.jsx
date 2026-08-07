@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import DashboardLayout from "../../components/layouts/DashboardLayout";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { LuTrash2 } from "react-icons/lu";
 import { PRIORITY_DATA } from "../../utils/data";
 import SelectDropdown from "../../components/Inputs/SelectDropdown";
@@ -15,6 +15,7 @@ import moment from "moment";
 const CreateTask = () => {
   const location = useLocation();
   const { taskId } = location.state || {};
+  const navigate = useNavigate();
 
   const [taskData, setTaskData] = useState({
     title: "",
@@ -173,7 +174,19 @@ const CreateTask = () => {
     }
   };
 
-  const deleteTask = () => {};
+  const deleteTask = async () => {
+    try {
+      await axiosInstance.delete(API_PATHS.TASKS.DELETE_TASK(taskId));
+      setOpenDeleteAlert(false);
+      toast.success("Task deleted successfully");
+      navigate("/admin/tasks");
+    } catch (error) {
+      console.error(
+        "Error deleting task",
+        error.response?.data?.message || error.message,
+      );
+    }
+  };
 
   useEffect(() => {
     if (taskId) {
