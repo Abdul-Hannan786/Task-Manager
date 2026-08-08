@@ -3,6 +3,7 @@ import DashboardLayout from "../../components/layouts/DashboardLayout";
 import axiosInstance from "../../utils/axiosinstance";
 import { API_PATHS } from "../../utils/apiPaths";
 import { LuFileSpreadsheet } from "react-icons/lu";
+import UserCard from "../../components/Cards/UserCard";
 
 const ManageUsers = () => {
   const [allUsers, setAllUsers] = useState([]);
@@ -42,9 +43,9 @@ const ManageUsers = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
-          {allUsers?.map((user) => {
-            <UserCard key={user._id} userInfo={user} />;
-          })}
+          {allUsers?.map((user) => (
+            <UserCard key={user._id} userInfo={user} />
+          ))}
         </div>
       </div>
     </DashboardLayout>
