@@ -10,7 +10,7 @@ import Login from "./pages/Auth/Login";
 import Dashboard from "./pages/Admin/Dashboard";
 import ManageTasks from "./pages/Admin/ManageTasks";
 import CreateTask from "./pages/Admin/CreateTask";
-import ManangeUsers from "./pages/Admin/ManangeUsers";
+import ManageUsers from "./pages/Admin/ManageUsers";
 
 import UserDashboard from "./pages/User/UserDashboard";
 import MyTasks from "./pages/User/MyTasks";
@@ -35,7 +35,7 @@ const App = () => {
               <Route path="/admin/dashboard" element={<Dashboard />} />
               <Route path="/admin/tasks" element={<ManageTasks />} />
               <Route path="/admin/create-task" element={<CreateTask />} />
-              <Route path="/admin/users" element={<ManangeUsers />} />
+              <Route path="/admin/users" element={<ManageUsers />} />
             </Route>
 
             {/* User Routes */}
