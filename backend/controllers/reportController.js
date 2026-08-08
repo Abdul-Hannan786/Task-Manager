@@ -113,7 +113,7 @@ export const exportUsersReport = async (req, res) => {
       worksheet.addRow(user);
     });
 
-    res.setHeaders(
+    res.setHeader(
       "Content-Type",
       "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     );
