@@ -31,14 +31,14 @@ const ManageUsers = () => {
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement("a");
       link.href = url;
-      link.setAttribute("download", "user_details.xlsx");
+      link.setAttribute("download", "task_details.xlsx");
       document.body.appendChild(link);
       link.click();
       link.parentNode.removeChild(link);
       window.URL.revokeObjectURL(url);
     } catch (error) {
       console.error("Error fetching user report", error);
-      toast.error("Failed to download user report. PLease try again");
+      toast.error("Failed to download user report. Please try again");
     }
   };
 
