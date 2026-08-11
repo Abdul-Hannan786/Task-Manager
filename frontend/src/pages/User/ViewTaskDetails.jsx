@@ -1,3 +1,4 @@
+/* eslint-disable no-unsafe-optional-chaining */
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axiosInstance from "../../utils/axiosinstance";
@@ -11,7 +12,7 @@ const ViewTaskDetails = () => {
   const { id } = useParams();
   const [task, setTask] = useState(null);
 
-  const getStatusTagColor = () => {
+  const getStatusTagColor = (status) => {
     switch (status) {
       case "In Progress":
         return "text-cyan-500 bg-cyan-50 border border-cyan-500/10";
@@ -39,7 +40,30 @@ const ViewTaskDetails = () => {
   };
 
   // Handle Todo Check
-  const updateTodoChecklist = async () => {};
+  const updateTodoChecklist = async (index) => {
+    const todoCheckList = [...task?.todoCheckList];
+    const taskId = id;
+
+    if (todoCheckList && todoCheckList[index]) {
+      todoCheckList[index].completed = !todoCheckList[index].completed;
+
+      try {
+        const response = await axiosInstance.put(
+          API_PATHS.TASKS.UPDATE_TODO_CHECKLIST(taskId),
+          { todoCheckList },
+        );
+        if (response.status === 200) {
+          setTask(response.data?.task || task);
+        } else {
+          // Optionally revert the toggle if the API call fails
+          todoCheckList[index].completed = !todoCheckList[index].completed;
+        }
+      } catch (error) {
+        todoCheckList[index].completed = !todoCheckList[index].completed;
+        console.error("Error updating todo Checklist", error)
+      }
+    }
+  };
 
   // Handle Attachment link click
   const handleLinkClick = (link) => {

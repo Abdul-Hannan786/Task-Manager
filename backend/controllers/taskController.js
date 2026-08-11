@@ -16,12 +16,12 @@ export const getTasks = async (req, res) => {
     if (req.user.role === "admin") {
       tasks = await Task.find(filter).populate(
         "assignedTo",
-        "name email profileImageUrl"
+        "name email profileImageUrl",
       );
     } else {
       tasks = await Task.find({ ...filter, assignedTo: req.user._id }).populate(
         "assignedTo",
-        "name email profileImageUrl"
+        "name email profileImageUrl",
       );
     }
 
@@ -29,16 +29,16 @@ export const getTasks = async (req, res) => {
     tasks = await Promise.all(
       tasks.map((task) => {
         const completedCount = task.todoCheckList.filter(
-          (item) => item.completed
+          (item) => item.completed,
         ).length;
 
         return { ...task._doc, completedCount };
-      })
+      }),
     );
 
     // Status summary counts
     const allTasks = await Task.countDocuments(
-      req.user.role === "admin" ? {} : { assignedTo: req.user._id }
+      req.user.role === "admin" ? {} : { assignedTo: req.user._id },
     );
 
     const pendingTasks = await Task.countDocuments({
@@ -80,7 +80,7 @@ export const getTaskById = async (req, res) => {
   try {
     const task = await Task.findById(req.params.id).populate(
       "assignedTo",
-      "name email profileImageUrl"
+      "name email profileImageUrl",
     );
     if (!task) {
       return res.status(404).json({ messgae: "Task not found" });
@@ -182,7 +182,7 @@ export const updateTaskStatus = async (req, res) => {
     if (!task) return res.status(404).json({ message: "Task not found" });
 
     const isAssigned = task.assignedTo.some(
-      (userId) => userId.toString() === req.user._id.toString()
+      (userId) => userId.toString() === req.user._id.toString(),
     );
 
     if (!isAssigned && req.user.role !== "admin") {
@@ -211,6 +211,7 @@ export const updateTaskCheckList = async (req, res) => {
     const task = await Task.findById(req.params.id);
     if (!task) return res.status(404).json({ message: "Task not found" });
 
+
     if (!task.assignedTo.includes(req.user._id) && req.user.role !== "admin") {
       return res
         .status(403)
@@ -218,10 +219,9 @@ export const updateTaskCheckList = async (req, res) => {
     }
 
     task.todoCheckList = todoCheckList;
-
     // Auto-update progress based on checklist completion
     const completedCount = task.todoCheckList.filter(
-      (item) => item.completed
+      (item) => item.completed,
     ).length;
 
     const totalItems = task.todoCheckList.length;
@@ -240,7 +240,7 @@ export const updateTaskCheckList = async (req, res) => {
     await task.save();
     const updatedTask = await Task.findById(req.params.id).populate(
       "assignedTo",
-      "name email profileImageUrl"
+      "name email profileImageUrl",
     );
 
     res.json({ message: "Task checklist updated", task: updatedTask });
@@ -367,12 +367,13 @@ export const getUserDashboardData = async (req, res) => {
     const taskPriorityLevelsRaw = await Task.aggregate([
       { $match: { assignedTo: userId } },
       { $group: { _id: "$priority", count: { $sum: 1 } } },
-    ])
+    ]);
 
     const taskPriorityLevels = taskPriorities.reduce((acc, priority) => {
-      acc[priority] = taskPriorityLevelsRaw.find((item) => item._id === priority)?.count || 0;
+      acc[priority] =
+        taskPriorityLevelsRaw.find((item) => item._id === priority)?.count || 0;
       return acc;
-    }, {})
+    }, {});
 
     // Fetch recent 10 tasks assigned to the user
     const recentTasks = await Task.find({ assignedTo: userId })
@@ -380,19 +381,19 @@ export const getUserDashboardData = async (req, res) => {
       .limit(10)
       .select("title status priority dueDate createdAt");
 
-      res.status(200).json({
-        statistics: {
-          totalTasks,
-          pendingTasks,
-          completedTasks,
-          overdueTasks,
-        },
-        charts: {
-          taskDistribution,
-          taskPriorityLevels,
-        },
-        recentTasks,
-      })
+    res.status(200).json({
+      statistics: {
+        totalTasks,
+        pendingTasks,
+        completedTasks,
+        overdueTasks,
+      },
+      charts: {
+        taskDistribution,
+        taskPriorityLevels,
+      },
+      recentTasks,
+    });
   } catch (error) {
     res.status(500).json({ message: "Server Error", error: error.message });
   }
