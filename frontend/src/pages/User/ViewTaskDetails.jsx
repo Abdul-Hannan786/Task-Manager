@@ -5,6 +5,7 @@ import { API_PATHS } from "../../utils/apiPaths";
 import DashboardLayout from "../../components/layouts/DashboardLayout";
 import moment from "moment";
 import AvatarGroup from "../../components/AvatarGroup";
+import { LuSquareArrowOutUpRight } from "react-icons/lu";
 
 const ViewTaskDetails = () => {
   const { id } = useParams();
@@ -42,6 +43,9 @@ const ViewTaskDetails = () => {
 
   // Handle Attachment link click
   const handleLinkClick = (link) => {
+    if (!/^https?:\/\//i.test(link)) {
+      link = "https://" + link; // Default to HTTPS
+    }
     window.open(link, "_blank");
   };
 
@@ -116,6 +120,23 @@ const ViewTaskDetails = () => {
                   />
                 ))}
               </div>
+
+              {task?.attachments?.length > 0 && (
+                <div className="">
+                  <label className="text-xs font-medium text-slate-500">
+                    Attachments
+                  </label>
+
+                  {task?.attachments?.map((link, index) => (
+                    <Attachment
+                      key={`link_${index}`}
+                      link={link}
+                      index={index}
+                      onClick={() => handleLinkClick(link)}
+                    />
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         )}
@@ -150,6 +171,24 @@ const TodoChecklist = ({ text, isChecked, onChange }) => {
       />
 
       <p className="text-[13px] md:text-sm text-gray-800">{text}</p>
+    </div>
+  );
+};
+
+const Attachment = ({ link, index, onClick }) => {
+  return (
+    <div
+      className="flex justify-between bg-gray-50 border border-gray-100 px-3 py-2 rounded-md mb-3 mt-2 cursor-pointer"
+      onClick={onClick}
+    >
+      <div className="flex-1 flex  items-center gap-3">
+        <span className="text-xs md:text-sm text-gray-400 font-semibold mr-2">
+          {index < 9 ? `0${index + 1}` : index + 1}
+        </span>
+        <p className="text-xs md:text-sm text-black">{link}</p>
+      </div>
+
+      <LuSquareArrowOutUpRight className="text-gray-400" />
     </div>
   );
 };
