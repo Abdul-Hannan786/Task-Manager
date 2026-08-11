@@ -10,7 +10,7 @@ const Progress = ({ progress, status }) => {
       return "text-lime-500 bg-lime-500 border border-lime-500/10";
 
     default: // Pending
-      return "text-amber-500 bg-amber-500 border border-amber-500/10";
+      return "text-violet-500 bg-violet-500 border border-violet-500/10";
   }
 };
   return (
