@@ -1,4 +1,4 @@
-export const BASE_URL = "http://localhost:8000";
+export const BASE_URL = "https://task-manager-backend-ashy-xi.vercel.app";
 
 export const API_PATHS = {
   AUTH: {
@@ -31,9 +31,5 @@ export const API_PATHS = {
   REPORTS: {
     EXPORT_TASKS: "/api/reports/export/tasks", // Download all tasks as an Excel File
     EXPORT_USERS: "/api/reports/export/users", // Download User Task Report
-  },
-
-  IMAGE: {
-    UPLOAD_IMAGE: "/api/auth/upload-image",
   },
 };
