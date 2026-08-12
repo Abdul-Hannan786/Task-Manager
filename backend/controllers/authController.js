@@ -17,7 +17,7 @@ export const registerUser = async (req, res) => {
     const imageFile = req.file;
 
     // Validation: Check for missing fields
-    if (!fullName || !email || !password) {
+    if (!name || !email || !password) {
       return res.status(400).json({ message: "All fields are required" });
     }
 
@@ -50,6 +50,8 @@ export const registerUser = async (req, res) => {
 
       profileImageUrl = await uploadToCloudinary(imageFile.buffer, "users");
     }
+
+    console.log(profileImageUrl)
 
     // Create new user
     const user = await User.create({
