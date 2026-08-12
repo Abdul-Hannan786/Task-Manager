@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import User from "../models/User.js";
 import bcrypt from "bcryptjs";
+import { uploadToCloudinary } from "../config/cloudinary.js";
 
 const generateToken = (userId) => {
   return jwt.sign({ id: userId }, process.env.JWT_SECRET, { expiresIn: "7d" });
@@ -11,8 +12,14 @@ const generateToken = (userId) => {
 // @access  Public
 export const registerUser = async (req, res) => {
   try {
-    const { name, email, password, profileImageUrl, adminInviteToken } =
+    const { name, email, password, adminInviteToken } =
       req.body;
+    const imageFile = req.file;
+
+    // Validation: Check for missing fields
+    if (!fullName || !email || !password) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
 
     // Check if user already exists
     const userExists = await User.findOne({ email });
@@ -33,12 +40,25 @@ export const registerUser = async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
+    let profileImageUrl;
+    if (imageFile) {
+      if (!imageFile.mimetype.startsWith("image/")) {
+        return res
+          .status(400)
+          .json({ message: "Only image files are allowed" });
+      }
+
+      profileImageUrl = await uploadToCloudinary(imageFile.buffer, "users");
+    }
+
     // Create new user
     const user = await User.create({
       name,
       email,
       password: hashedPassword,
-      profileImageUrl,
+      ...(profileImageUrl?.secure_url && {
+        profileImageUrl: profileImageUrl.secure_url,
+      }),
       role,
     });
 
