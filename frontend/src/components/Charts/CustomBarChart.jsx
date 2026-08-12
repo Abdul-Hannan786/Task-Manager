@@ -24,7 +24,6 @@ const getBarColor = (entry) => {
       return "#6B7280"; 
   }
 };
-console.log(data)
   const CustomTooltip = ({ active, payload }) => {
     if (active && payload && payload.length) {
       return (
